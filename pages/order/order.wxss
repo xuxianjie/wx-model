@@ -1,0 +1,35 @@
+.container{
+  width: 100%;
+  height: 100%;
+  background-color: #f3f3f3;
+}
+.container .tab-list{
+  width: 100%;
+  padding: 30rpx 0;
+  background-color: #fff;
+  box-shadow: 0 0 15rpx 3rpx rgba(0,0,0,.2);
+}
+.container .list{
+  width: 100%;
+  /* background-color: #f3f3f3; */
+  padding-top:20rpx; 
+}
+.container .list .item{
+  width: 710rpx;
+  margin: 0 auto;
+  margin-bottom: 20rpx;
+  border-radius: 20rpx;
+  padding: 0 20rpx;
+  overflow: hidden;
+}
+.container .list .item .item-b{
+  display: flex;
+  justify-content: flex-end;
+}
+.container .list .item .item-b button{
+  border-radius: 30rpx;
+  margin-right: 30rpx;
+}
+.container .list .item .item-info{
+  height: 100rpx;
+}

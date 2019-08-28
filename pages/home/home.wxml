@@ -1,0 +1,38 @@
+<view class="container">
+  <!-- 轮播图 -->
+  <view class='carousel-box' >
+    <swiper current='{{carouselCurrent}}' indicator-dots="{{carouselList.length>1}}" indicator-color="#e5e5e5" indicator-active-color="#FFD33F" autoplay interval="4000" circular>
+      <swiper-item wx:for="{{carouselList}}" wx:key="{{index}}">
+        <image data-url='{{item}}' bindtap="carouselImgPreview" src='{{item}}'></image>
+      </swiper-item>
+      <swiper-item wx:if="{{!carouselList||carouselList.length<=0}}">
+        <image data-url='{{item}}' bindtap="carouselImgPreview" src='../../images/EmptyState.png'></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 无轮播图时，显示备份图 -->
+  <!-- <image class='no-carousel' wx:if="{{!carouselList.length}}" src='../../images/123.jpg'></image> -->
+
+
+  <!-- banner 广告栏-->
+  <view class='banner flex-row-center'>
+    <navigator hover-class='none' url='../category/category'>
+      <text>预约分类</text>
+      <image src='../../images/classification.png'></image>
+    </navigator>
+    <navigator hover-class='none' url='../wallet/wallet'>
+      <text>分类银行</text>
+      <image src='../../images/bank.png'></image>
+    </navigator>
+  </view>
+
+  <!-- 九宫格 -->
+  <van-row gutter="20">
+  <!-- 根节点样式 custom-class -->
+    <van-col span="8"><view class="flex-col-center">单元格</view></van-col>
+    <van-col span="8"><view class="flex-col-center">单元格</view></van-col>
+    <van-col span="8"><view class="flex-col-center">单元格</view></van-col>
+    <van-col span="8"><view class="flex-col-center">单元格</view></van-col>
+    <van-col span="8"><view class="flex-col-center">单元格</view></van-col>
+  </van-row>
+</view>

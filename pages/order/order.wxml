@@ -1,0 +1,34 @@
+<van-toast id="van-toast" />
+
+<view class="container">
+  <view class='tab-list'>
+    <van-tabs bind:change="changeTab" type="card" line-width="30rpx" color="#4c8cfd">
+      <!-- 参数	说明	类型	默认值
+        active	当前激活标签的索引	Number	0
+        color	标签颜色	String	#f44
+        z-index	z-index 层级	Number	1
+        type	样式风格，可选值为card	String	line
+        border	是否展示外边框，仅在line风格下生效	Boolean	true
+        duration	动画时间 (单位秒)	Number	0.3
+        line-width	底部条宽度 (px)	Number	与当前标签等宽
+        swipe-threshold	滚动阈值，设置标签数量超过多少个可滚动	Number	4
+        animated	是否使用动画切换 Tabs	Boolean	false
+        swipeable	是否开启手势滑动切换	Boolean	false
+        sticky	是否使用粘性定位布局	Boolean	false -->
+      <van-tab title="{{item.title}}" tab-class="" wx:for="{{tabList}}"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class='list'>
+      <van-panel title="标题" desc="" status="已付款" use-footer-slot custom-class="item" >
+        <view class='item-info'>内容</view>
+        <view slot="footer" class='item-b'>
+          <van-button size="small">按钮</van-button>
+          <van-button size="small" type="danger">按钮</van-button>
+        </view>
+      </van-panel>
+  </view>
+
+
+</view>

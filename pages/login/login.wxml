@@ -1,0 +1,10 @@
+<view class="container">
+  <view class='img-box'>
+    <open-data type="userAvatarUrl"></open-data>
+  </view>
+  <view class='name'>谷德加创享公寓</view>
+  <button class='large-btn padding-width' open-type="getUserInfo" bindgetuserinfo="register">
+    <image src='../../images/wx.png'></image>
+    <text>微信登录</text>
+  </button>
+</view>
