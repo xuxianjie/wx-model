@@ -1,0 +1,107 @@
+<wxs src="../../filter/filter.wxs" module="filter" />
+<van-toast id="van-toast" />
+<login show="{{showBool}}" data-name="{{show}}" bindoverly="closeLogin" bindload="load"></login>
+
+<view class="container">
+  <view class='tab-list'>
+    <van-tabs bind:change="changeTab" line-width="25" color="#583ec4" tab-active-class="tab-activie" custom-class="tab-nav" tab-class="tab-nav" border="{{false}}" active="{{ active }}">
+      <!-- 参数	说明	类型	默认值
+        active	当前激活标签的索引	Number	0
+        color	标签颜色	String	#f44
+        z-index	z-index 层级	Number	1
+        type	样式风格，可选值为card	String	line
+        border	是否展示外边框，仅在line风格下生效	Boolean	true
+        duration	动画时间 (单位秒)	Number	0.3
+        line-width	底部条宽度 (px)	Number	与当前标签等宽
+        swipe-threshold	滚动阈值，设置标签数量超过多少个可滚动	Number	4
+        animated	是否使用动画切换 Tabs	Boolean	false
+        swipeable	是否开启手势滑动切换	Boolean	false
+        sticky	是否使用粘性定位布局	Boolean	false -->
+      <van-tab title="{{item.title}}" wx:for="{{tabList}}"></van-tab>
+    </van-tabs>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class='list'>
+    <van-panel use-footer-slot custom-class="item" use-footer-slot="{{true}}" wx:for="{{orderList}}">
+      <view class="order-top flex-row-center" slot="header">
+        <view class="top-left">
+          <view>下单时间：{{filter.filter.getDate(item.createTime,3)}}</view>
+          <view>订单号码：{{item.number}}</view>
+        </view>
+        <view class="top-right">{{item.status=='unpaid' ?'未支付':(item.status=='cancel'?'交易取消':(item.status=='delivered'?'已发货':(item.status=='completed'?'交易完成':(item.status=='refunded'?'退款成功':(item.status=='fail'?'退款失败':(item.status=='refunding'?'退款中':(item.status=='unDelivered'?(item.type=='groupon'?'拼团成功':'待发货'):(item.status=='received'?'已签收':((item.status=='unDelivered'&&item.type==
+          'groupon')?'拼团成功':(item.status=='Failure'?'拼团失败':(item.status == 'paid' ?'待发货':'')))))))))))}}</view>
+      </view>
+      <view class='item-info' bindtap="goDetail" data-index="{{index}}">
+        <view class='goods' wx:for="{{item.orderProductList}}" wx:for-item="orderItem">
+          <image src='{{filter.filter.addBaseUrl(orderItem.imageUrl)}}' mode='aspectFill' class="goods-img"></image>
+          <image src="../../images/group.png" class="group-img" wx:if="{{item.type == 'groupon'}}"></image>
+        </view>
+      </view>
+      <view wx:for="{{item.orderProductList}}" wx:for-item="orderItem" class="order-desc">
+        {{orderItem.productName}}*{{orderItem.quantity}}
+      </view>
+      <view slot="footer" class='item-b' style='color:#000000'>
+        实付：
+        <text style="flex:1" class="price-word">￥{{item.totalPrice}}</text>
+        <view class="button">
+          <!-- <button class="again" bindtap="agianOrder" data-index="{{index}}" wx:if="{{item.status != 'unpaid' && item.type != 'groupon'}}">再来一单</button> -->
+          <button class="again theme-back" style="color:#fff;" bindtap="payOrder" data-index="{{index}}" wx:if="{{item.status == 'unpaid'}}">去支付</button>
+          <button class="again" bindtap='openPopup' data-index="{{index}}" wx:if="{{item.status != 'unpaid' && item.status != 'unDelivered' && item.status != 'cancel' && item.status != 'grouping' && item.status != 'Failure'}}">查看物流</button>
+          <button class="again" bindtap="cancelOrder" data-id="{{item.id}}" wx:if="{{item.status == 'unpaid'}}">取消订单</button>
+
+        </view>
+      </view>
+    </van-panel>
+  </view>
+  <view class='no-list' wx:if="{{orderList.length<1}}">
+    <image src='../../images/nothing.png'></image>
+  </view>
+  <button open-type="contact" class="service-btn">
+    <image src="../../images/service_icon.png"></image>
+    <text>客服</text>
+  </button>
+</view>
+
+
+
+
+<!-- 遮罩层 弹出框， 模态框，海报  -->
+<van-popup custom-class="popup flex-col-center" show="{{ popupBool }}" overlay="true" bind:click-overlay="showPopup" close-on-click-overlay="true" position="bottom" custom-style="height: 70%" round>
+  <view class='express-box'>
+    <view class='express-top'>
+      <view class='express-title flex-row-center'>
+        <view>物流信息</view>
+        <image src='../../images/wrong.png' catchtap='showPopup'></image>
+      </view>
+      <view class='express-info'>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'SF'}}">发货快递：顺丰</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'YTO'}}">发货快递：圆通</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'ZTO'}}">发货快递：中通</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'STO'}}">发货快递：申通</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'EMS'}}">发货快递：EMS</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'HTKY'}}">发货快递：百世</view>
+        <view wx:if="{{orderList[expressIndex].deliveryExpress== 'YD'}}">发货快递：韵达</view>
+        <view wx:if="{{!orderList[expressIndex].deliveryExpress}}">发货快递：暂无</view>
+
+        <!-- <view>官方电话：95546</view> -->
+        <view>运单编号：{{orderList[expressIndex].deliveryExpressNumber||'暂无'}}</view>
+      </view>
+    </view>
+    <view class='express-detail'>
+      <view class='item' wx:for="{{express.Traces}}" wx:if='{{express.Traces.length}}'>
+        <view class='radio {{index==0?"active":""}}'>
+        </view>
+        <view class='line' wx:if="{{index==0}}"></view>
+        <view class=''></view>
+        <view class='item-info flex-col-center'>
+          <view class='content {{index==0?"theme-word":""}}'>{{item.AcceptStation}}</view>
+          <view class='time'>{{item.AcceptTime}}</view>
+        </view>
+        <view wx:if='{{index == express.Traces.length-1}}' style="margin-top:10rpx;margin-bottom:20rpx;text-align: center;color:#999">~已经到底了~</view>
+      </view>
+
+      <view wx:if='{{!express.Traces.length}}' style="margin-top:100rpx;text-align: center;color:#999">暂无信息...</view>
+    </view>
+  </view>
+</van-popup>

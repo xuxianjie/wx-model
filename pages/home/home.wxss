@@ -1,0 +1,10 @@
+.container{
+
+}
+swiper{
+  width: 100%;
+  height: 400rpx;
+}
+.container .banner{
+  
+}

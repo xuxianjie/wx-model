@@ -1,0 +1,19 @@
+<wxs src="../../filter/filter.wxs" module="filter" />
+<van-toast id="van-toast" />
+
+<view class="container">
+  <!-- 轮播图 -->
+  <view class='carousel-box' >
+    <swiper current='{{carouselCurrent}}' indicator-dots="{{carouselList.length>1}}" indicator-color="#e5e5e5" indicator-active-color="#FFD33F" autoplay interval="4000" circular>
+      <swiper-item wx:for="{{carouselList}}" wx:key="{{index}}">
+        <image data-url='{{item}}' bindtap="carouselImgPreview" src='{{item}}' mode="aspectFill"></image>
+      </swiper-item>
+      <swiper-item wx:if="{{!carouselList||carouselList.length<=0}}">
+        <image data-url='{{item}}' bindtap="carouselImgPreview" src='../../images/nothing.png' mode="aspectFill"></image>
+      </swiper-item>
+    </swiper>
+  </view>
+  <!-- 无轮播图时，显示备份图 -->
+
+
+</view>

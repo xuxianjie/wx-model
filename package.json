@@ -1,0 +1,16 @@
+{
+  "name": "base",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cli":"node E:/FrontProjects/mywx-cli/bin/wx.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vant-weapp": "^0.5.16",
+    "wxml2canvas": "^1.0.1"
+  }
+}
