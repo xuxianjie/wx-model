@@ -1,20 +1,18 @@
 let token;
 
 var config = {
-  host: "https://graree.com",
+  host: "https://web.ju-kun.com",
   test: "https://app.kilobee.com",
-  local: "http://192.168.0.112:8080",
-  project: "/trip",
-  appId: "trip",
+  local: "http://192.168.0.163:8080",
+  project: "/jukun",
+  appId: "jukun",
   header: {
-    AppId: "trip"
+    AppId: "jukun"
   }
 }
-config.baseUrl = config.host + config.project;
-
+config.baseUrl = config.test + config.project;
 let apis = {
-
-
+  
 };
 //调用:http.res["user"].get|post|put|delete|page
 
@@ -24,7 +22,7 @@ var req = function(url, method, params, headers) {
   if(!headers){
     headers = config.header
   }
-  if (wx.getStorageSync("user").token) {
+  if (wx.getStorageSync("user") && wx.getStorageSync("user").token) {
     headers.Authorization = wx.getStorageSync("user").token;
   }
   // if (url.indexOf("http")==-1){

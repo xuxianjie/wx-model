@@ -33,3 +33,36 @@
 
 }
 
+
+
+
+
+.van-cell{
+  width: 710rpx !important;
+  height: 70rpx !important;
+
+  overflow: hidden;
+  border-radius: 30rpx;
+  margin: 0 auto;
+  background-color: #fff !important;
+  margin-bottom: 20rpx;
+  padding: 0 30rpx !important;
+  display: flex;
+  align-items: center;
+box-shadow:0px 1px 4px 0px rgba(201,53,116,0.1);
+font-size: 26rpx;
+}
+
+.van-icon{
+  display: flex  !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.van-cell__title{
+  font-size: 28rpx !important;
+
+}
+.button-hover{
+  color: #333;
+  background-color: #fff;
+}
