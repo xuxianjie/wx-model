@@ -1,15 +1,15 @@
 module.exports = (function() {
 var __MODS__ = {};
-var __DEFINE__ = function(modId, func, req) { var m = { exports: {} }; __MODS__[modId] = { status: 0, func: func, req: req, m: m }; };
-var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = { exports: {} }; __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); if(typeof m.exports === "object") { Object.keys(m.exports).forEach(function(k) { __MODS__[modId].m.exports[k] = m.exports[k]; }); if(m.exports.__esModule) Object.defineProperty(__MODS__[modId].m.exports, "__esModule", { value: true }); } else { __MODS__[modId].m.exports = m.exports; } } return __MODS__[modId].m.exports; };
+var __DEFINE__ = function(modId, func, req) { var m = { exports: {}, _tempexports: {} }; __MODS__[modId] = { status: 0, func: func, req: req, m: m }; };
+var __REQUIRE__ = function(modId, source) { if(!__MODS__[modId]) return require(source); if(!__MODS__[modId].status) { var m = __MODS__[modId].m; m._exports = m._tempexports; var desp = Object.getOwnPropertyDescriptor(m, "exports"); if (desp && desp.configurable) Object.defineProperty(m, "exports", { set: function (val) { if(typeof val === "object" && val !== m._exports) { m._exports.__proto__ = val.__proto__; Object.keys(val).forEach(function (k) { m._exports[k] = val[k]; }); } m._tempexports = val }, get: function () { return m._tempexports; } }); __MODS__[modId].status = 1; __MODS__[modId].func(__MODS__[modId].req, m, m.exports); } return __MODS__[modId].m.exports; };
 var __REQUIRE_WILDCARD__ = function(obj) { if(obj && obj.__esModule) { return obj; } else { var newObj = {}; if(obj != null) { for(var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) newObj[k] = obj[k]; } } newObj.default = obj; return newObj; } };
 var __REQUIRE_DEFAULT__ = function(obj) { return obj && obj.__esModule ? obj.default : obj; };
-__DEFINE__(1567072536513, function(require, module, exports) {
+__DEFINE__(1606734345560, function(require, module, exports) {
 var __TEMP__ = require('./src/index');var Wxml2Canvas = __REQUIRE_DEFAULT__(__TEMP__);
 
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });exports.default = Wxml2Canvas;
-}, function(modId) {var map = {"./src/index":1567072536514}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1567072536514, function(require, module, exports) {
+}, function(modId) {var map = {"./src/index":1606734345561}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1606734345561, function(require, module, exports) {
 var __TEMP__ = require('./util');var Util = __REQUIRE_DEFAULT__(__TEMP__);
 
 const imageMode = ['scaleToFill', 'aspectFit', 'aspectFill', 'widthFix', 'top', 'bottom', 'center', 'left', 'right', 'top left', 'top right', 'bottom left', 'bottom right']
@@ -1402,8 +1402,8 @@ class Wxml2Canvas {
 }
 
 if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: true });exports.default = Wxml2Canvas;
-}, function(modId) { var map = {"./util":1567072536515}; return __REQUIRE__(map[modId], modId); })
-__DEFINE__(1567072536515, function(require, module, exports) {
+}, function(modId) { var map = {"./util":1606734345562}; return __REQUIRE__(map[modId], modId); })
+__DEFINE__(1606734345562, function(require, module, exports) {
 /**
  * 获取字符的长度，full为true时，一个汉字算两个长度
  * @param {String} str 
@@ -1527,6 +1527,6 @@ if (!exports.__esModule) Object.defineProperty(exports, "__esModule", { value: t
     getUid
 };
 }, function(modId) { var map = {}; return __REQUIRE__(map[modId], modId); })
-return __REQUIRE__(1567072536513);
+return __REQUIRE__(1606734345560);
 })()
 //# sourceMappingURL=index.js.map

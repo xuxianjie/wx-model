@@ -1,58 +1,103 @@
 let token;
+// import md5 from "./md5.js"
+import md5 from 'js-md5';
+import Toast from '@vant/weapp/toast/toast';
 
 var config = {
-  host: "https://web.ju-kun.com",
-  test: "https://app.kilobee.com",
-  local: "http://192.168.0.163:8080",
-  project: "/jukun",
-  appId: "jukun",
+  host: "https://xingkong.uchar.cn",
+  test: "http://120.79.28.173:8080",
+  local: "http://192.168.0.153:8080",
+  project: "/xingkong",
+  appId: "xingkong",
   header: {
-    AppId: "jukun"
+    AppId: "xingkong" 
   }
 }
-config.baseUrl = config.test + config.project;
+config.baseUrl = config.host + config.project;
+
 let apis = {
-  
+  orderList: { url: "/api/orders-page"},
 };
 //调用:http.res["user"].get|post|put|delete|page
 
 
 
-var req = function(url, method, params, headers) {
-  if(!headers){
+
+function getCode(url) {
+  let obj = {};
+  let reg = /[?&][^?&]+=[^?&]+/g;
+  let arr = url.match(reg);
+  if (arr) {
+    arr.forEach((item) => {
+      let tempArr = item.substring(1).split('=');
+      let key = decodeURIComponent(tempArr[0]);
+      let val = decodeURIComponent(tempArr[1]);
+      obj[key] = val;
+    });
+  }
+  return obj;
+}
+
+function getParamsStr(paramsStr) {
+  console.log(paramsStr+'==========')
+  var newUrl = paramsStr.split("&").sort().join("&");
+  var url = newUrl + "&appSecret=uchar.cn";
+  console.log(url)
+  console.log(md5(url).toString())
+  return md5(url).toString();
+  
+}
+
+function create(params) {
+  // if (typeof params == "string") {
+  //     return this.getParamsStr(params);
+  // } else if (typeof params == "object") {
+    console.dir(params)
+  var arr = [];
+  for (var i in params) {
+    if (params[i] instanceof Array) {
+      continue
+    } else {
+      arr.push((i + "=" + params[i]));
+    }
+
+  }
+  return getParamsStr(arr.join(("&")));
+  // }
+}
+var req = function (url, method, params, headers) {
+  if (!headers) {
     headers = config.header
   }
-  if (wx.getStorageSync("user") && wx.getStorageSync("user").token) {
+  if (wx.getStorageSync("user").token) {
     headers.Authorization = wx.getStorageSync("user").token;
   }
-  // if (url.indexOf("http")==-1){
-  //   url = config.baseUrl + url;
-  // }
-  wx.showNavigationBarLoading();
-  // var user = wx.getStorageSync("user");
-  // if (user && user.token) {
-  //   if (!params) {
-  //     params = { token: user.token };
-  //   } else {
-  //     params.token = user.token;
-  //   }
-  // }
+  let sign = "";
+  console.log(params)
+  sign = create(params);
+  let timestamp = new Date().getTime().toString()
 
-  var promise = new Promise(function(resolve, reject) {
+  headers.timestamp = timestamp
+  headers.Sign = sign
+
+  wx.showNavigationBarLoading();
+
+  var promise = new Promise(function (resolve, reject) {
     wx.request({
       url: config.baseUrl + url,
       method: method.toUpperCase(),
       data: params,
       header: headers,
       dataType: "json",
-      success: function(resp) {
+      success: function (resp) {
         wx.hideNavigationBarLoading();
         if (resp.statusCode == 200) {
-          if(resp.data.errCode){
-            wx.showToast({
-              title: resp.data.errMsg||'',
-              duration: 2000
-            })
+          if (resp.data.errCode) {
+            // wx.showToast({
+            //   title: resp.data.errMsg || '',
+            //   duration: 2000
+            // })
+            Toast.fail(resp.data.errMsg || '')
           }
           resolve(resp.data);
         } else {
@@ -71,17 +116,17 @@ let res = {
 };
 for (var key in apis) {
   apis[key].get = function (url) {
-    return function (params, headers){
+    return function (params, headers) {
       return req(url, "GET", params, headers);
     };
   }(apis[key].url)
-  
-  apis[key].getById = (id)=>{
+
+  apis[key].getById = (id) => {
     return function (url) {
-        return req(url, "GET");
-    } (apis[key].url+'/'+id)
+      return req(url, "GET");
+    }(apis[key].url + '/' + id)
   }
-  
+
   apis[key].post = function (url) {
     return function (params, headers) {
       return req(url, "POST", params, headers);
@@ -89,7 +134,7 @@ for (var key in apis) {
   }(apis[key].url)
   apis[key].put = function (url) {
     return function (params, headers) {
-    return req(url, "PUT", params, headers);
+      return req(url, "PUT", params, headers);
     }
   }(apis[key].url)
   apis[key].delete = function (url) {
@@ -118,7 +163,6 @@ for (var key in apis) {
   }
   res[key] = apis[key];
 }
-console.log(res)
 // for (var key in apis) {
 //   let api = {};
 //   api.url = apis[key].url;
@@ -168,17 +212,17 @@ console.log(res)
 module.exports = {
   config: config,
   req: req,
-  res:res,
-  get: function(url, params, headers) {
+  res: res,
+  get: function (url, params, headers) {
     return req(url, "GET", params, headers);
   },
-  post: function(url, params, headers) {
+  post: function (url, params, headers) {
     return req(url, "POST", params, headers);
   },
-  put: function(url, params, headers) {
+  put: function (url, params, headers) {
     return req(url, "PUT", params, headers);
   },
-  delete: function(url, params, headers) {
+  delete: function (url, params, headers) {
     return req(url, "DELETE", params, headers);
   }
 }

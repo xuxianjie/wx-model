@@ -5,12 +5,13 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "cli":"node ../mywx-cli/bin/wx.js"
+    "cli": "node ../mywx-cli/bin/wx.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "vant-weapp": "^0.5.16",
+    "@vant/weapp": "^1.6.2",
+    "js-md5": "^0.7.3",
     "wxml2canvas": "^1.0.1"
   }
 }

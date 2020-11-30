@@ -10,7 +10,14 @@
 		"minified": true,
 		"newFeature": true,
 		"nodeModules": true,
-		"autoAudits": false
+		"autoAudits": false,
+		"packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram/"
+      }
+    ]
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.7.7",

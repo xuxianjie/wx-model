@@ -1,5 +1,5 @@
 const http =require('../../utils/http.js')
-import Toast from 'vant-weapp/toast/toast';
+import Toast from '@vant/weapp/toast/toast';
 
 Page({
 
